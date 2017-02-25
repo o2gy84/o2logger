@@ -1,0 +1,44 @@
+#!/usr/bin/env python
+# encoding: utf-8
+
+from waflib.Build import BuildContext
+
+APPNAME = 'logger.exe'
+LIBNAME = 'o2logger'
+VERSION = '0.0.1'
+
+top = '.'
+out = 'BUILD'
+
+def options(ctx):
+        ctx.load('compiler_cxx')
+
+def configure(ctx):
+    #print('→ configuring the project in ' + ctx.path.abspath())
+    ctx.load('compiler_cxx')
+
+
+def build(ctx):
+
+    ctx.program(
+            target       = APPNAME,
+            source       = ['main.cpp'],
+            includes     = ['.'],
+            linkflags    = ['-ggdb'],
+            cxxflags     = ['-ggdb', '-std=c++11', '-Wall', '-Wpedantic', '-Werror'],
+            use          = [LIBNAME],
+    )
+    ctx.stlib(
+            target       = LIBNAME,
+            source       = ['logger.cpp'],
+            includes     = ['.'],
+            linkflags    = ['-ggdb'],
+            cxxflags     = ['-ggdb', '-std=c++11', '-Wall', '-Wpedantic', '-Werror'],
+    )
+    #ctx.shlib(
+            #target       = LIBNAME,
+            #source       = ['logger.cpp'],
+            #includes     = ['.'],
+            #linkflags    = ['-ggdb'],
+            #cxxflags     = ['-ggdb', '-std=c++11', '-Wall', '-Wpedantic', '-Werror'],
+    #)
