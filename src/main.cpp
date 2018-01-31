@@ -2,8 +2,7 @@
 #include <string>
 #include <sstream>
 
-#include "logger.hpp"
-
+#include "o2logger.hpp"
 
 
 std::string usage(const std::string &bin)
@@ -15,9 +14,9 @@ std::string usage(const std::string &bin)
     return ss.str();
 }
 
-int main(int argc, char *argv[])
+int set(int argc, char *argv[])
 {
-    Logger &l = Logger::get();
+    logger::Logger &l = logger::get();
 
     for (int i = 1; i < argc; ++i)
     {
@@ -59,40 +58,48 @@ int main(int argc, char *argv[])
             l.setOptionLogLevel(loglevel);
         }
     }
+    return 1;
+}
 
-    logi("Hello world!");
-    logw("World is in a danger!");
-    loge("Oh no, it is cruel world :(");
-    logd("Debug");
-    logd1("Debug level1");
-    logd2("Debug level2");
-    logd3("Debug level3");
-    logd4("Debug level4");
-    logd5("Debug level5");
+int main(int argc, char *argv[])
+{
+    if (set(argc, argv) <= 0) return 0;
 
-    logi("================");
+    logger::f::logi("key: ", 5, 4);
+    return 0;
+    logger::logi("Hello world!");
+    logger::logw("World is in a danger!");
+    logger::loge("Oh no, it is cruel world :(");
+    logger::logd("Debug");
+    logger::logd1("Debug level1");
+    logger::logd2("Debug level2");
+    logger::logd3("Debug level3");
+    logger::logd4("Debug level4");
+    logger::logd5("Debug level5");
 
-    logi("key value: {0}, {1}", 1, 2);
-    logw("key value: {1}, {0}", 1, 2);
-    loge("key {0} value {1}", 3.14);
-    logd("Deb{0}ug: ", 0);
-    logd1("Debug level: {0}", 1);
-    logd2("Debug level: {0}", 2);
-    logd3("Debug level: {0}", 3);
-    logd4("Debug level: {0}", 4);
-    logd5("Debug level: {0}", 5);
+    logger::logi("================");
 
-    logi("================");
+    logger::f::logi("key value: {0}, {1}", 1, 2);
+    logger::f::logw("key value: {1}, {0}", 1, 2);
+    logger::f::loge("key {0} value {1}", 3.14);
+    logger::f::logd("Deb{0}ug: ", 0);
+    logger::f::logd1("Debug level: {0}", 1);
+    logger::f::logd2("Debug level: {0}", 2);
+    logger::f::logd3("Debug level: {0}", 3);
+    logger::f::logd4("Debug level: {0}", 4);
+    logger::f::logd5("Debug level: {0}", 5);
 
-    kvlogi("key value: ", 1);
-    kvlogw("key value: ", "abc");
-    kvloge("key value: ", 3.14);
-    kvlogd("Debug: ", 0);
-    kvlogd1("Debug level: ", 1);
-    kvlogd2("Debug level: ", 2);
-    kvlogd3("Debug level: ", 3);
-    kvlogd4("Debug level: ", 4);
-    kvlogd5("Debug level: ", 5);
+    logger::logi("================");
+
+    logger::logi("key value: ", 1);
+    logger::logw("key value: ", "abc");
+    logger::loge("key value: ", 3.14);
+    logger::logd("Debug: ", 0);
+    logger::logd1("Debug level: ", 1);
+    logger::logd2("Debug level: ", 2);
+    logger::logd3("Debug level: ", 3);
+    logger::logd4("Debug level: ", 4);
+    logger::logd5("Debug level: ", 5);
 
     return 0;
 }

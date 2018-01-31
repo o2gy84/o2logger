@@ -11,19 +11,13 @@
 #include <syslog.h>
 
 
-/*
-    logi - [i] - info
-    logw - [w] - warning
-    loge - [e] - error
-    logd - [d] - debug [logd1, logd2, logd3, logd4, logd5]
-*/
+namespace logger
+{
 
-
-// can log into stdout, file, stream, syslog...
 class Logger
 {
 public:
-    static Logger& get();
+    static Logger& impl();
 
     // TODO: log into file
     void log(const char *text) const
@@ -55,9 +49,6 @@ private:
 };
 
 
-namespace logger
-{
-
 // get number from braced string like "{123}"
 int braced_number(const std::string &s);
 
@@ -75,9 +66,9 @@ typename std::enable_if< (N >= sizeof...(Tp)), void>::type print_tuple_at(const 
 
 // logging without args, string, char* e.t.c.
 template<typename T>
-void logi_impl(char prefix, int log_level, T &text)
+void logi_impl(char prefix, int log_level, const T &text)
 {
-    const Logger &l = Logger::get();
+    const Logger &l = Logger::impl();
     if (l.loglevel() < log_level) return;
 
     std::stringbuf stringbuf;
@@ -89,9 +80,9 @@ void logi_impl(char prefix, int log_level, T &text)
 
 // logging in "key: value" style
 template<typename T>
-void logi_impl2(char prefix, int log_level, const std::string &key, T&& val)
+void logi_impl2(char prefix, int log_level, const std::string &key, const T &val)
 {
-    const Logger &l = Logger::get();
+    const Logger &l = Logger::impl();
     if (l.loglevel() < log_level) return;
 
     std::stringbuf stringbuf;
@@ -105,10 +96,12 @@ void logi_impl2(char prefix, int log_level, const std::string &key, T&& val)
 template <typename ...Args>
 void log_impl3(char prefix, int log_level, const std::string &format, Args&&... args)
 {
-    const Logger &l = Logger::get();
+    const Logger &l = Logger::impl();
     if (l.loglevel() < log_level) return;
 
     std::tuple<Args...> list(args...);
+
+    //std::cerr<< "test: " << std::tuple_size<decltype(list)>::value << "\n";
 
     std::stringbuf stringbuf;
     std::ostream os(&stringbuf);
@@ -125,7 +118,8 @@ void log_impl3(char prefix, int log_level, const std::string &format, Args&&... 
             continue;
         }
 
-        int tuple_arg = logger::braced_number(std::string(format.begin() + open_brace + 1, format.begin() + close_brace));
+        // TODO: don't create temp string, use pointers
+        int tuple_arg = braced_number(std::string(format.begin() + open_brace + 1, format.begin() + close_brace));
         if (tuple_arg == -1)
         {
             open_brace = format.find('{', open_brace + 1);
@@ -135,16 +129,16 @@ void log_impl3(char prefix, int log_level, const std::string &format, Args&&... 
         os << std::string(format.begin() + last_pos, format.begin() + open_brace);
         switch (tuple_arg)
         {    
-            case 0: logger::print_tuple_at<0>(list, os); break;
-            case 1: logger::print_tuple_at<1>(list, os); break;
-            case 2: logger::print_tuple_at<2>(list, os); break;
-            case 3: logger::print_tuple_at<3>(list, os); break;
-            case 4: logger::print_tuple_at<4>(list, os); break;
-            case 5: logger::print_tuple_at<5>(list, os); break;
-            case 6: logger::print_tuple_at<6>(list, os); break;
-            case 7: logger::print_tuple_at<7>(list, os); break;
-            case 8: logger::print_tuple_at<8>(list, os); break;
-            case 9: logger::print_tuple_at<9>(list, os); break;
+            case 0: print_tuple_at<0>(list, os); break;
+            case 1: print_tuple_at<1>(list, os); break;
+            case 2: print_tuple_at<2>(list, os); break;
+            case 3: print_tuple_at<3>(list, os); break;
+            case 4: print_tuple_at<4>(list, os); break;
+            case 5: print_tuple_at<5>(list, os); break;
+            case 6: print_tuple_at<6>(list, os); break;
+            case 7: print_tuple_at<7>(list, os); break;
+            case 8: print_tuple_at<8>(list, os); break;
+            case 9: print_tuple_at<9>(list, os); break;
             default: throw std::runtime_error("logger: too many arguments (max = 9)");
         }
 
@@ -155,118 +149,4 @@ void log_impl3(char prefix, int log_level, const std::string &format, Args&&... 
     l.log(stringbuf.str().c_str());
 }
 
-
-}   // namespace
-
-template<typename T> void logi(T &text)
-{
-    logger::logi_impl('i', 0, text);
-}
-template<typename T> void loge(T &text)
-{
-    logger::logi_impl('e', 0, text);
-}
-template<typename T> void logw(T &text)
-{
-    logger::logi_impl('w', 0, text);
-}
-template<typename T> void logd(T &text)
-{
-    logger::logi_impl('d', 0, text);
-}
-template<typename T> void logd1(T &text)
-{
-    logger::logi_impl('d', 1, text);
-}
-template<typename T> void logd2(T &text)
-{
-    logger::logi_impl('d', 2, text);
-}
-template<typename T> void logd3(T &text)
-{
-    logger::logi_impl('d', 3, text);
-}
-template<typename T> void logd4(T &text)
-{
-    logger::logi_impl('d', 4, text);
-}
-template<typename T> void logd5(T &text)
-{
-    logger::logi_impl('d', 5, text);
-}
-
-
-template<typename T> void kvlogi(const std::string &text, T val)
-{
-    logger::logi_impl2('i', 0, text, val);
-}
-template<typename T> void kvloge(const std::string &text, T val)
-{
-    logger::logi_impl2('e', 0, text, val);
-}
-template<typename T> void kvlogw(const std::string &text, T val)
-{
-    logger::logi_impl2('w', 0, text, val);
-}
-template<typename T> void kvlogd(const std::string &text, T val)
-{
-    logger::logi_impl2('d', 0, text, val);
-}
-template<typename T> void kvlogd1(const std::string &text, T val)
-{
-    logger::logi_impl2('d', 1, text, val);
-}
-template<typename T> void kvlogd2(const std::string &text, T val)
-{
-    logger::logi_impl2('d', 2, text, val);
-}
-template<typename T> void kvlogd3(const std::string &text, T val)
-{
-    logger::logi_impl2('d', 3, text, val);
-}
-template<typename T> void kvlogd4(const std::string &text, T val)
-{
-    logger::logi_impl2('d', 4, text, val);
-}
-template<typename T> void kvlogd5(const std::string &text, T val)
-{
-    logger::logi_impl2('d', 5, text, val);
-}
-
-
-template<typename ...Args> void logi(const std::string &format, Args&&... args)
-{
-    logger::log_impl3('i', 0, format, args...);
-}
-template<typename ...Args> void loge(const std::string &format, Args&&... args)
-{
-    logger::log_impl3('e', 0, format, args...);
-}
-template<typename ...Args> void logw(const std::string &format, Args&&... args)
-{
-    logger::log_impl3('w', 0, format, args...);
-}
-template<typename ...Args> void logd(const std::string &format, Args&&... args)
-{
-    logger::log_impl3('d', 0, format, args...);
-}
-template<typename ...Args> void logd1(const std::string &format, Args&&... args)
-{
-    logger::log_impl3('d', 1, format, args...);
-}
-template<typename ...Args> void logd2(const std::string &format, Args&&... args)
-{
-    logger::log_impl3('d', 2, format, args...);
-}
-template<typename ...Args> void logd3(const std::string &format, Args&&... args)
-{
-    logger::log_impl3('d', 3, format, args...);
-}
-template<typename ...Args> void logd4(const std::string &format, Args&&... args)
-{
-    logger::log_impl3('d', 4, format, args...);
-}
-template<typename ...Args> void logd5(const std::string &format, Args&&... args)
-{
-    logger::log_impl3('d', 5, format, args...);
-}
+}   // namespace logger

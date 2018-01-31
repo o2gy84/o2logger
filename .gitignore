@@ -1,3 +1,7 @@
+src/.lock-waf_linux2_build
+src/.waf-*
+src/BUILD/
+
 # Compiled Object files
 *.slo
 *.lo

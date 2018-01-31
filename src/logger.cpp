@@ -1,5 +1,5 @@
-
 #include "logger.hpp"
+
 
 namespace logger
 {
@@ -31,9 +31,6 @@ int braced_number(const std::string &s)
     return ret;
 }
 
-}   // namespace
-
-
 Logger::Logger()
 {
     _log_level = 0;
@@ -43,7 +40,6 @@ Logger::Logger()
 void Logger::setOptionLogLevel(int level)
 {
     if (level < 0) level = 0;
-    if (level > 5) level = 5;
     _log_level = level;
 }
 
@@ -60,8 +56,10 @@ void Logger::setOptionSyslog(const char *progname, bool syslog)
     }
 }
 
-Logger& Logger::get()
+Logger& Logger::impl()
 {
     static Logger logger;
     return logger;
 }
+
+}   // namespace logger
