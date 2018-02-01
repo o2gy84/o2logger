@@ -65,8 +65,6 @@ int main(int argc, char *argv[])
 {
     if (set(argc, argv) <= 0) return 0;
 
-    logger::f::logi("key: ", 5, 4);
-    return 0;
     logger::logi("Hello world!");
     logger::logw("World is in a danger!");
     logger::loge("Oh no, it is cruel world :(");
@@ -94,7 +92,8 @@ int main(int argc, char *argv[])
     logger::logi("key value: ", 1);
     logger::logw("key value: ", "abc");
     logger::loge("key value: ", 3.14);
-    logger::logd("Debug: ", 0);
+    logger::logd("Debug: ", 0, 1, 3);
+    logger::logd("Debug: ", 0, ", Debug2: ", 2, ", Debug3: ", 3);
     logger::logd1("Debug level: ", 1);
     logger::logd2("Debug level: ", 2);
     logger::logd3("Debug level: ", 3);

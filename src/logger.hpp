@@ -64,9 +64,21 @@ typename std::enable_if< (N >= sizeof...(Tp)), void>::type print_tuple_at(const 
     os << "nil";
 }
 
+template <std::size_t N, typename... Tp>
+typename std::enable_if<(N < sizeof...(Tp)), void>::type print_tuple_or_nothing_at(const std::tuple<Tp...> &t, std::ostream &os)
+{
+    os << std::get<N>(t);
+}
+
+template <std::size_t N, typename... Tp>
+typename std::enable_if< (N >= sizeof...(Tp)), void>::type print_tuple_or_nothing_at(const std::tuple<Tp...> &, std::ostream &os)
+{
+}
+
+
 // logging without args, string, char* e.t.c.
 template<typename T>
-void logi_impl(char prefix, int log_level, const T &text)
+void log_impl(char prefix, int log_level, const T &text)
 {
     const Logger &l = Logger::impl();
     if (l.loglevel() < log_level) return;
@@ -78,19 +90,41 @@ void logi_impl(char prefix, int log_level, const T &text)
     l.log(stringbuf.str().c_str());
 }
 
-// logging in "key: value" style
-template<typename T>
-void logi_impl2(char prefix, int log_level, const std::string &key, const T &val)
+// logging in style like: "key1" => "value1", "key2" => "value2"
+template <typename ...Args>
+void log_impl2(char prefix, int log_level, const std::string &key, Args&&... args)
 {
     const Logger &l = Logger::impl();
     if (l.loglevel() < log_level) return;
 
     std::stringbuf stringbuf;
     std::ostream os(&stringbuf);
-    os << "[" << prefix << "] " << key << val << std::endl;
+    os << "[" << prefix << "] ";
+    os << key;
 
+    std::tuple<Args...> list(args...);
+    constexpr size_t n = std::tuple_size<decltype(list)>::value;
+    for (size_t i = 0; i < n; ++i)
+    {
+        switch (i)
+        {
+            case 0: print_tuple_or_nothing_at<0>(list, os); break;
+            case 1: print_tuple_or_nothing_at<1>(list, os); break;
+            case 2: print_tuple_or_nothing_at<2>(list, os); break;
+            case 3: print_tuple_or_nothing_at<3>(list, os); break;
+            case 4: print_tuple_or_nothing_at<4>(list, os); break;
+            case 5: print_tuple_or_nothing_at<5>(list, os); break;
+            case 6: print_tuple_or_nothing_at<6>(list, os); break;
+            case 7: print_tuple_or_nothing_at<7>(list, os); break;
+            case 8: print_tuple_or_nothing_at<8>(list, os); break;
+            case 9: print_tuple_or_nothing_at<9>(list, os); break;
+            default: throw std::runtime_error("logger: too many arguments (max = 9)");
+        }
+    }
+    os << std::endl;
     l.log(stringbuf.str().c_str());
 }
+
 
 // logging in style like: string.format("key: {0}, value: {1}", key, val)
 template <typename ...Args>

@@ -21,78 +21,76 @@ logger::Logger& get()
 
 template<typename T> void logi(const T &text)
 {
-    logger::logi_impl('i', 0, text);
+    logger::log_impl('i', 0, text);
 }
 template<typename T> void loge(const T &text)
 {
-    logger::logi_impl('e', 0, text);
+    logger::log_impl('e', 0, text);
 }
 template<typename T> void logw(const T &text)
 {
-    logger::logi_impl('w', 0, text);
+    logger::log_impl('w', 0, text);
 }
 template<typename T> void logd(const T &text)
 {
-    logger::logi_impl('d', 0, text);
+    logger::log_impl('d', 0, text);
 }
 template<typename T> void logd1(const T &text)
 {
-    logger::logi_impl('d', 1, text);
+    logger::log_impl('d', 1, text);
 }
 template<typename T> void logd2(const T &text)
 {
-    logger::logi_impl('d', 2, text);
+    logger::log_impl('d', 2, text);
 }
 template<typename T> void logd3(const T &text)
 {
-    logger::logi_impl('d', 3, text);
+    logger::log_impl('d', 3, text);
 }
 template<typename T> void logd4(const T &text)
 {
-    logger::logi_impl('d', 4, text);
+    logger::log_impl('d', 4, text);
 }
 template<typename T> void logd5(const T &text)
 {
-    logger::logi_impl('d', 5, text);
+    logger::log_impl('d', 5, text);
 }
 
-
-// TODO: many args..., why just key-value?
-template<typename T> void logi(const std::string &key, const T &val)
+template<typename ...Args> void logi(const std::string &key, Args&&... args)
 {
-    logger::logi_impl2('i', 0, key, val);
+    logger::log_impl2('i', 0, key, args...);
 }
-template<typename T> void loge(const std::string &key, const T &val)
+template<typename ...Args> void loge(const std::string &key, Args&&... args)
 {
-    logger::logi_impl2('e', 0, key, val);
+    logger::log_impl2('e', 0, key, args...);
 }
-template<typename T> void logw(const std::string &key, const T &val)
+template<typename ...Args> void logw(const std::string &key, Args&&... args)
 {
-    logger::logi_impl2('w', 0, key, val);
+    logger::log_impl2('w', 0, key, args...);
 }
-template<typename T> void logd(const std::string &key, const T &val)
+template<typename ...Args> void logd(const std::string &key, Args&&... args)
 {
-    logger::logi_impl2('d', 0, key, val);
+    logger::log_impl2('d', 0, key, args...);
 }
-template<typename T> void logd1(const std::string &key, const T &val)
+template<typename ...Args> void logd1(const std::string &key, Args&&... args)
 {
-    logger::logi_impl2('d', 1, key, val);
+    logger::log_impl2('d', 1, key, args...);
 }
-template<typename T> void logd2(const std::string &key, const T &val)
+template<typename ...Args> void logd2(const std::string &key, Args&&... args)
 {
-    logger::logi_impl2('d', 2, key, val);
+    logger::log_impl2('d', 2, key, args...);
 }
-template<typename T> void logd3(const std::string &key, const T &val)
+template<typename ...Args> void logd3(const std::string &key, Args&&... args)
 {
-    logger::logi_impl2('d', 3, key, val);
+    logger::log_impl2('d', 3, key, args...);
 }
-template<typename T> void logd4(const std::string &key, const T &val)
+template<typename ...Args> void logd4(const std::string &key, Args&&... args)
 {
-    logger::logi_impl2('d', 4, key, val);
+    logger::log_impl2('d', 4, key, args...);
 }
-template<typename T> void logd5(const std::string &key, const T &val)
+template<typename ...Args> void logd5(const std::string &key, Args&&... args)
 {
-    logger::logi_impl2('d', 5, key, val);
+    logger::log_impl2('d', 5, key, args...);
 }
 
 namespace f  // formatted
