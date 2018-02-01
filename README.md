@@ -22,10 +22,6 @@ Example:
 std::cerr << "all these " << "brackets are " << "forced to cry" << 42 << std::endl;
 ```
   
-## Abilities
- - can set loglevel
- - can write into syslog
-  
 ## Usage
 ```
 #include "o2logger.hpp"
@@ -34,6 +30,10 @@ using namespace o2logger;
 o2logger::Logger::impl().setOptionLogLevel(0);             // [0-5], by default it is 0
 o2logger::Logger::impl().setOptionSyslog("myprog", true);  // write into syslog, default false
 ```
+So, o2logger at least:
+ - can set loglevel
+ - can write into syslog or stdout
+
   
 ## Severety
 ```
