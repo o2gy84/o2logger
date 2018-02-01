@@ -22,7 +22,7 @@ Example:
 std::cerr << "all these " << "brackets are " << "forced to cry" << 42 << std::endl;
 ```
   
-## Usage
+## Usage of o2logger
 ```
 #include "o2logger.hpp"
 using namespace o2logger;
