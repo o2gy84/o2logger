@@ -16,7 +16,7 @@ std::string usage(const std::string &bin)
 
 int set(int argc, char *argv[])
 {
-    logger::Logger &l = o2logger::get();
+    o2logger::Logger &l = o2logger::Logger::impl();
 
     for (int i = 1; i < argc; ++i)
     {

@@ -14,10 +14,7 @@
 namespace o2logger
 {
 
-logger::Logger& get()
-{
-    return logger::Logger::impl();
-}
+using logger::Logger;
 
 template<typename T> void logi(const T &text)
 {

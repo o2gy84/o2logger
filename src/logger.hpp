@@ -71,7 +71,7 @@ typename std::enable_if<(N < sizeof...(Tp)), void>::type print_tuple_or_nothing_
 }
 
 template <std::size_t N, typename... Tp>
-typename std::enable_if< (N >= sizeof...(Tp)), void>::type print_tuple_or_nothing_at(const std::tuple<Tp...> &, std::ostream &os)
+typename std::enable_if< (N >= sizeof...(Tp)), void>::type print_tuple_or_nothing_at(const std::tuple<Tp...> &, std::ostream &)
 {
 }
 
