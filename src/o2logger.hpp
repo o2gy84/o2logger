@@ -11,7 +11,7 @@
  */
 
 
-namespace logger
+namespace o2logger
 {
 
 logger::Logger& get()
@@ -56,41 +56,41 @@ template<typename T> void logd5(const T &text)
     logger::log_impl('d', 5, text);
 }
 
-template<typename ...Args> void logi(const std::string &key, Args&&... args)
+template<typename ...Args> void logi(Args&&... args)
 {
-    logger::log_impl2('i', 0, key, args...);
+    logger::log_impl2('i', 0, args...);
 }
-template<typename ...Args> void loge(const std::string &key, Args&&... args)
+template<typename ...Args> void loge(Args&&... args)
 {
-    logger::log_impl2('e', 0, key, args...);
+    logger::log_impl2('e', 0, args...);
 }
-template<typename ...Args> void logw(const std::string &key, Args&&... args)
+template<typename ...Args> void logw(Args&&... args)
 {
-    logger::log_impl2('w', 0, key, args...);
+    logger::log_impl2('w', 0, args...);
 }
-template<typename ...Args> void logd(const std::string &key, Args&&... args)
+template<typename ...Args> void logd(Args&&... args)
 {
-    logger::log_impl2('d', 0, key, args...);
+    logger::log_impl2('d', 0, args...);
 }
-template<typename ...Args> void logd1(const std::string &key, Args&&... args)
+template<typename ...Args> void logd1(Args&&... args)
 {
-    logger::log_impl2('d', 1, key, args...);
+    logger::log_impl2('d', 1, args...);
 }
-template<typename ...Args> void logd2(const std::string &key, Args&&... args)
+template<typename ...Args> void logd2(Args&&... args)
 {
-    logger::log_impl2('d', 2, key, args...);
+    logger::log_impl2('d', 2, args...);
 }
-template<typename ...Args> void logd3(const std::string &key, Args&&... args)
+template<typename ...Args> void logd3(Args&&... args)
 {
-    logger::log_impl2('d', 3, key, args...);
+    logger::log_impl2('d', 3, args...);
 }
-template<typename ...Args> void logd4(const std::string &key, Args&&... args)
+template<typename ...Args> void logd4(Args&&... args)
 {
-    logger::log_impl2('d', 4, key, args...);
+    logger::log_impl2('d', 4, args...);
 }
-template<typename ...Args> void logd5(const std::string &key, Args&&... args)
+template<typename ...Args> void logd5(Args&&... args)
 {
-    logger::log_impl2('d', 5, key, args...);
+    logger::log_impl2('d', 5, args...);
 }
 
 namespace f  // formatted
@@ -134,4 +134,4 @@ template<typename ...Args> void logd5(const std::string &format, Args&&... args)
 }
 
 }   // namespace f
-}   // namespace logger
+}   // namespace o2logger
