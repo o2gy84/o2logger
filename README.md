@@ -5,18 +5,18 @@ logger in string-format style
 Base concept - is a mix between `printf` and `std::streams`.
 
 ## Rationale
-Usage of printf:
- + convenient for writing
- - it is necessary to specify types of variable
- - it is impossible to print complex type  
+Usage of printf:  
+ \+ convenient for writing  
+ \- it is necessary to specify types of variable  
+ \- it is impossible to print complex type  
 Example:
 ```
 printf("easy to combain %s with data: %d\n", "what i want", 42);
 ```
-Usage of streams:
- + no need to specify types
- + it is possible to print complex type
- - awkward syntax  
+Usage of streams:  
+ \+ no need to specify types  
+ \+ it is possible to print complex type  
+ \- awkward syntax  
 Example:
 ```
 std::cerr << "all these " << "brackets are " << "forced to cry" << 42 << std::endl;
