@@ -61,10 +61,30 @@ int set(int argc, char *argv[])
     return 1;
 }
 
+class PrintableVal
+{
+public:
+    PrintableVal(int _a, const std::string &_b) : a(_a), b(_b) {}
+    friend std::ostream& operator<<(std::ostream &os, const PrintableVal &p);
+
+private:
+    int a;
+    std::string b;
+};
+
+std::ostream& operator<<(std::ostream &os, const PrintableVal &p)
+{
+    return os << "int: " << p.a << ", string: \"" << p.b << "\"";
+}
+
 int main(int argc, char *argv[])
 {
     if (set(argc, argv) <= 0) return 0;
 
+    PrintableVal p(42, "hello world");
+
+    o2logger::logi("print struct: ", std::move(p));
+    o2logger::logi("print struct: ", p);
     o2logger::logi("Hello world!");
     o2logger::logw("World is in a danger!");
     o2logger::loge("Oh no, it is cruel world :(");
@@ -79,7 +99,7 @@ int main(int argc, char *argv[])
 
     o2logger::f::logi("key value: {0}, {1}", 1, 2);
     o2logger::f::logw("key value: {1}, {0}", 1, 2);
-    o2logger::f::loge("key {0} value {1}", 3.14);
+    o2logger::f::loge("key: {0}, value: {1}", 3.14);
     o2logger::f::logd("Deb{0}ug: ", 0);
     o2logger::f::logd1("Debug level: {0}", 1);
     o2logger::f::logd2("Debug level: {0}", 2);

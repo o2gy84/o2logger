@@ -16,6 +16,7 @@ def options(ctx):
 def configure(ctx):
     #print('→ configuring the project in ' + ctx.path.abspath())
     ctx.load('compiler_cxx')
+    ctx.load('clang_compilation_database')
 
 
 def build(ctx):

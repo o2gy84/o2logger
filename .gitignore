@@ -1,6 +1,10 @@
 src/.lock-waf_linux2_build
 src/.waf-*
 src/BUILD/
+tags
+*.pyc
+*.swp
+src/compile_commands.json
 
 # Compiled Object files
 *.slo

@@ -92,7 +92,7 @@ void log_impl(char prefix, int log_level, const T &text)
 
 // logging in style like: "key1" => "value1", "key2" => "value2"
 template <typename ...Args>
-void log_impl2(char prefix, int log_level, Args&&... args)
+void log_impl2(char prefix, int log_level, const Args &...args)
 {
     const Logger &l = Logger::impl();
     if (l.loglevel() < log_level) return;
@@ -101,7 +101,9 @@ void log_impl2(char prefix, int log_level, Args&&... args)
     std::ostream os(&stringbuf);
     os << "[" << prefix << "] ";
 
-    std::tuple<Args...> list(args...);
+    // std::tuple<Args&&...> list(std::forward<Args>(args)...);
+    std::tuple<const Args&...> list(args...);
+
     constexpr size_t n = std::tuple_size<decltype(list)>::value;
     for (size_t i = 0; i < n; ++i)
     {
@@ -126,14 +128,12 @@ void log_impl2(char prefix, int log_level, Args&&... args)
 
 // logging in style like: string.format("key: {0}, value: {1}", key, val)
 template <typename ...Args>
-void log_impl3(char prefix, int log_level, const std::string &format, Args&&... args)
+void log_impl3(char prefix, int log_level, const std::string &format, const Args &...args)
 {
     const Logger &l = Logger::impl();
     if (l.loglevel() < log_level) return;
 
-    std::tuple<Args...> list(args...);
-
-    //std::cerr<< "test: " << std::tuple_size<decltype(list)>::value << "\n";
+    std::tuple<const Args&...> list(args...);
 
     std::stringbuf stringbuf;
     std::ostream os(&stringbuf);
