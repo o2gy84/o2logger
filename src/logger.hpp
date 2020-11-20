@@ -28,7 +28,7 @@ public:
         }
         else
         {
-            std::cout << text;
+            std::cout << text << std::endl;
         }
     }
 
